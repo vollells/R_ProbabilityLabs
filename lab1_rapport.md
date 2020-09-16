@@ -103,3 +103,39 @@ hist(Y6, probability = TRUE)
 ```{r, echo=FALSE}
 hist(Y7, probability = TRUE) 
 ```
+## Uppgift 3 Relation mellan fördelningar 
+
+### 1) Simulera och visualisera respektive fördelning
+
+```{r }
+X <- rbinom(1000, size = 10000, prob = 0.001)
+Y <- rt(1000, df = 10000) 
+```
+```{r, echo=FALSE}
+hist(X, probability = TRUE) 
+```
+```{r, echo=FALSE}
+hist(Y, probability = TRUE) 
+```
+
+### 2) Konvergerar mot..?
+
+Binominal konvergerar mot en Poissonfördelning ( med lambda = n \* p)
+Student-t konvergerar mot en standardnormalfördelning (dvs mean = 0, std = 1)
+
+### 3) Simulering av och jämförelse med fördelningarna de konvergerar mot
+
+```{r }
+X <- rpois(1000, lambda = 10) 
+Y <- rnorm(1000, mean = 0, sd = 1)
+```
+```{r, echo=FALSE}
+hist(X, probability = TRUE) 
+```
+```{r, echo=FALSE}
+hist(Y, probability = TRUE) 
+```
+
+Vi ser en tydlig likhet mellan den ursprungliga fördelningen och den fördelning
+den konvergerar mot. Student-t har dock en spetsigare topp och tyngre svans än
+normalfördelningen, vilket är väntat.
