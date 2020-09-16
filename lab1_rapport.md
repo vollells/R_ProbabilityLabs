@@ -52,7 +52,7 @@ X4 <- rgeom(10000, prob = 0.1)
 X5 <- rpois(10000, lambda = 10) 
 ```
 
-# Behöver vi linjen också?
+# TODO: Lägg till PDF från testfilen 
 
 ```{r, echo=FALSE}
 hist(X1, probability = TRUE) 
@@ -139,3 +139,13 @@ hist(Y, probability = TRUE)
 Vi ser en tydlig likhet mellan den ursprungliga fördelningen och den fördelning
 den konvergerar mot. Student-t har dock en spetsigare topp och tyngre svans än
 normalfördelningen, vilket är väntat.
+
+## Uppgift 4 Analytisk sannolikhet och approximation med Monte Carlo metoder 
+
+### 1)
+
+Y <- dbinom(10000, size = 10, prob = 0.1)
+P(Y=0) = 0.35
+
+Ysim <- rbinom(10000, size = 10, prob = 0.1)
+
