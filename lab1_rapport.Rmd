@@ -124,7 +124,7 @@ Y2 <- rexp(10000, rate = 3)
 ```
 ```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y2, probability = TRUE) 
-xfit <- seq(0, 5, 1) 
+xfit <- seq(0, 5, 0.1) 
 yfit <- dexp(xfit, 3)
 lines(xfit, yfit, col="blue", lwd=2) 
 ```
