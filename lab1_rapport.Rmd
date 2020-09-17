@@ -1,13 +1,17 @@
 ---
 title: "Lab 1"
 author: "Regina Hansson (regha434) and Victor Lells (vicle728)"
-date: '20XX-XX-XX'
+date: '2020-09-XX'
 output: pdf_document
+toc: true
+toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+\newpage
 
 ## Uppgift 1 Simulering av normalfördelning
 
@@ -22,14 +26,12 @@ x2 <- rnorm(10000, mean = 10, sd = 4)
 
 I figurerna nedan visas resultatet av dragningarna som ett histogram tillsammans med täthetsfunktionen.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
 hist(x1, probability = TRUE) 
 xfit <- seq(0, 20, 0.1) 
 yfit <- dnorm(xfit, mean = 10, sd = 4) 
 lines(xfit, yfit, col="blue", lwd=2) 
-```
 
-```{r, echo=FALSE}
 hist(x2, probability = TRUE) 
 xfit <- seq(-5, 25, 0.1) 
 yfit <- dnorm(xfit, mean = 10, sd = 4) 
@@ -38,71 +40,152 @@ lines(xfit, yfit, col="blue", lwd=2)
 
 ### 2) Beskriv skillnaden mellan de olika graferna.
 
-Vi kan se normalfördelningsformen tydligare om vi drar fler värden.
+Vi kan se normalfördelningsformen tydligare om vi drar fler värden, t.ex. är
+det mycket tydligare att väntevärdet är 10.
+
+\newpage 
 
 ## Uppgift 2 Simulera och visualisera andra fördelningar
 
 ### Diskreta
 
+X1 ~ Bernoulli(p = 0.2)
+
 ```{r }
 X1 <- rbinom(10000, size = 1, prob = 0.2)
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(X1, probability = TRUE)
+xfit <- seq(0, 1, 1) 
+yfit <- dbinom(xfit, size=1, prob = 0.2 )
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+
+X2 ~ Binomial(n = 20, p = 0.1)
+```{r }
 X2 <- rbinom(10000, size = 20, prob = 0.1)
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(X2, probability = TRUE) 
+xfit <- seq(0, 8, 1) 
+yfit <- dbinom(xfit, size=20, prob = 0.1 )
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+
+X3 ~ Binomial(n = 20, p = 0.5)
+```{r }
 X3 <- rbinom(10000, size = 20, prob = 0.5)
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(X3, probability = TRUE) 
+xfit <- seq(0, 20, 1) 
+yfit <- dbinom(xfit, size=20, prob = 0.5 )
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+
+X4 ~ Geometrisk(p = 0.1)
+```{r }
 X4 <- rgeom(10000, prob = 0.1) 
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(X4, probability = TRUE) 
+xfit <- seq(0, 120, 1) 
+yfit <- dgeom(xfit, 0.1)
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+
+X5 ~ Poisson(lambda = 0.5)
+```{r }
 X5 <- rpois(10000, lambda = 10) 
 ```
-
-# TODO: Lägg till PDF från testfilen 
-
-```{r, echo=FALSE}
-hist(X1, probability = TRUE) 
-```
-```{r, echo=FALSE}
-hist(X2, probability = TRUE) 
-```
-```{r, echo=FALSE}
-hist(X3, probability = TRUE) 
-```
-```{r, echo=FALSE}
-hist(X4, probability = TRUE) 
-```
-```{r, echo=FALSE}
-hist(X5, probability = TRUE) 
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(X5, probability = TRUE)
+xfit <- seq(0, 25, 1) 
+yfit <- dpois(xfit, 10 )
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
 
 ### Kontinuerliga
 
+Y1 ~ Likformig(min = 0, max = 1)
 ```{r }
 Y1 <- runif(10000, min = 0, max = 1) 
-Y2 <- rexp(10000, rate = 3)
-Y3 <- rgamma(10000, shape = 2, scale = 1)
-Y4 <- rt(10000, df = 3) 
-Y5 <- rbeta(10000, shape1 = 0.1, shape2 = 0.1) 
-Y6 <- rbeta(10000, shape1 = 1,   shape2 = 1) 
-Y7 <- rbeta(10000, shape1 = 10,  shape2 = 5) 
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(Y1, probability = TRUE) 
+xfit <- seq(0, 20, 1) 
+yfit <- dunif(xfit, 0,1)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
 
-```{r, echo=FALSE}
-hist(Y1, probability = TRUE) 
+Y2 ~ Exponentiell(theta = 3)
+```{r }
+Y2 <- rexp(10000, rate = 3)
 ```
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y2, probability = TRUE) 
+xfit <- seq(0, 5, 1) 
+yfit <- dexp(xfit, 3)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
-```{r, echo=FALSE}
+
+Y3 ~ Gamma(alpha = 2, beta = 1)
+```{r }
+Y3 <- rgamma(10000, shape = 2, scale = 1)
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y3, probability = TRUE) 
+xfit <- seq(0, 20, 1) 
+yfit <- dgamma(xfit, 2,1)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
-```{r, echo=FALSE}
+
+Y4 ~ Student-t(v = 3)
+```{r }
+Y4 <- rt(10000, df = 3) 
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y4, probability = TRUE) 
+xfit <- seq(-20, 20, 1) 
+yfit <- dt(xfit, 3 )
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
-```{r, echo=FALSE}
+
+Y5 ~ Beta(alpha = 0.1, beta = 0.1)
+```{r }
+Y5 <- rbeta(10000, shape1 = 0.1, shape2 = 0.1) 
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y5, probability = TRUE) 
+xfit <- seq(0, 1, 0.01) 
+yfit <- dbeta(xfit, 0.1, 0.1)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
-```{r, echo=FALSE}
+
+Y6 ~ Beta(alpha = 1, beta = 1)
+```{r }
+Y6 <- rbeta(10000, shape1 = 1,   shape2 = 1) 
+```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
 hist(Y6, probability = TRUE) 
+xfit <- seq(0, 1, 0.01) 
+yfit <- dbeta(xfit, 1, 1)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
-```{r, echo=FALSE}
-hist(Y7, probability = TRUE) 
+
+Y7 ~ Beta(alpha = 10, beta = 5)
+```{r }
+Y7 <- rbeta(10000, shape1 = 10,  shape2 = 5) 
 ```
+```{r, echo=FALSE, out.width="75%", fig.align="center"}
+hist(Y7, probability = TRUE)
+xfit <- seq(0, 1, 0.01) 
+yfit <- dbeta(xfit, 10, 5)
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+
+\newpage 
+
 ## Uppgift 3 Relation mellan fördelningar 
 
 ### 1) Simulera och visualisera respektive fördelning
@@ -111,34 +194,49 @@ hist(Y7, probability = TRUE)
 X <- rbinom(1000, size = 10000, prob = 0.001)
 Y <- rt(1000, df = 10000) 
 ```
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
 hist(X, probability = TRUE) 
-```
-```{r, echo=FALSE}
+xfit <- seq(0, 20, 1) 
+yfit <- dbinom(xfit, 10000, 0.001)
+lines(xfit, yfit, col="blue", lwd=2) 
+
 hist(Y, probability = TRUE) 
+xfit <- seq(-5, 5, 1) 
+yfit <- dt(xfit, 10000)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
 
 ### 2) Konvergerar mot..?
 
 Binominal konvergerar mot en Poissonfördelning ( med lambda = n \* p)
+
 Student-t konvergerar mot en standardnormalfördelning (dvs mean = 0, std = 1)
 
 ### 3) Simulering av och jämförelse med fördelningarna de konvergerar mot
 
 ```{r }
-X <- rpois(1000, lambda = 10) 
-Y <- rnorm(1000, mean = 0, sd = 1)
+X_konvergerad <- rpois(1000, lambda = 10) 
+Y_konvergerad <- rnorm(1000, mean = 0, sd = 1)
 ```
-```{r, echo=FALSE}
-hist(X, probability = TRUE) 
-```
-```{r, echo=FALSE}
-hist(Y, probability = TRUE) 
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+hist(X_konvergerad, probability = TRUE)
+xfit <- seq(0, 25, 1) 
+yfit <- dpois(xfit, 10)
+lines(xfit, yfit, col="blue", lwd=2) 
+
+hist(Y_konvergerad, probability = TRUE)
+xfit <- seq(-5, 5, 1) 
+yfit <- dnorm(xfit, 0, 1)
+lines(xfit, yfit, col="blue", lwd=2) 
 ```
 
 Vi ser en tydlig likhet mellan den ursprungliga fördelningen och den fördelning
 den konvergerar mot. Student-t har dock en spetsigare topp och tyngre svans än
 normalfördelningen, vilket är väntat.
+
+\newpage 
 
 ## Uppgift 4 Analytisk sannolikhet och approximation med Monte Carlo metoder 
 
