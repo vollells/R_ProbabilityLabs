@@ -282,7 +282,7 @@ pbinom(0, 10, 0.1)
 pbinom(10, 10, 0.1)
 ```
 
-### 3) Simulering av sannolikheter 
+### 3) Beräkning av sannolikheter med simulering 
 
 ```{r collapse = TRUE} 
 Xsim <- rnorm(10000, 0, 1)
