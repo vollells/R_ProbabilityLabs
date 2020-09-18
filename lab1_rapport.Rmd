@@ -301,6 +301,31 @@ sum(Ysim == 0)
 
 ## Uppgift 1.5 *Beräkna (icke-triviala) sannolikheter*
 
+### 1)
+
+```{r }
+faults_old <- rbinom(10000, 337, 0.1)
+sum(faults_old)/10000
+
+p_new <- runif(10000, min = 0.02, max = 0.16)
+faults_new <- rbinom(10000, 337, p_new)
+sum(faults_new)/10000
+```
+
+### 2)
+
+```{r }
+sum(faults_old < faults_new)/10000 # 0.41
+```
+
+### 3)
+
+```{r }
+sum(faults_old > 50)/10000
+
+sum(faults_new > 50)/10000
+```
+
 \newpage 
 
 ## Uppgift 2.1 *Stora talens lag*
