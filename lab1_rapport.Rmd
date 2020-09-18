@@ -330,6 +330,18 @@ sum(faults_new > 50)/10000
 
 ## Uppgift 2.1 *Stora talens lag*
 
+X - Bin(n=10,p=0.2)
+Y - Gamma(alpha=2,beta =2)
+
+### 1) 
+
+E(X) = n * p = 10 * 0.2 = 2
+E(Y) = alpha / beta = 2 / 2 = 1
+
+### 2) 
+
+
+
 \newpage 
 
 ## Uppgift 3.1 *Väntevärde och varians*
