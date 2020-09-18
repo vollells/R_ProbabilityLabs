@@ -240,89 +240,105 @@ normalfördelningen, vilket är väntat.
 
 ## Uppgift 1.4 *Analytisk sannolikhet och approximation med Monte Carlo metoder*
 
-### 1)
+### 1) Beräkning: täthetsfunktion vs simulering
 
 Beräknat: 
-
 ```{r }
 Y <- dbinom(10000, size = 10, prob = 0.1)
+# P(Y=0) = / Det 0:te elementet i Y-arrayen / = 0.3487
 ```
-P(Y=0) = / Det 0:te elementet i Y-arrayen / = 0.3487
-\newline
 
 Simulerat:
-
-```{r }
+```{r collapse=TRUE}
+# Andelen dragningar där y = 0
 Ysim <- rbinom(10000, size = 10, prob = 0.1)
-sum(Ysim == 0)
+result <- sum(Ysim == 0)/10000
+# resultatet varierar (med ca 0.01) mellan olika dragningar, såklart
+result
 ```
-Antal dragningar där y = 0 är 3539, så andelen blir 0.3539, men det varierar (med ca 100) mellan olika dragningar, såklart.
 
-### 2)
+### 2) Beräkning av sannolikheter med kumulativ fördelningsfunktion
 
-```{r } VA??
+```{r collapse = TRUE} 
 X <- pnorm(10000, mean = 0, sd = 1)
 Y <- pbinom(10000, size = 10, prob = 0.1)
+
+# P(X < 0) 
+pnorm(0, 0, 1)
+
+# P(-1 < X < 1) 
+pnorm(1, 0, 1)  - pnorm(-1, 0, 1)
+
+# P(1.96 < X) 
+pnorm(1.96, 0, 1)
+
+# P(0 < Y < 10)
+pbinom(9, 10, 0.1) - pbinom(0, 10, 0.1)
+
+# P(Y = 0) 
+pbinom(0, 10, 0.1)
+
+# P(0 <= Y <= 10)
+pbinom(10, 10, 0.1)
 ```
 
-P(X < 0) = / pnorm(0, 0, 1) / = 0.5
+### 3) Simulering av sannolikheter 
 
-P(-1 < X < 1) = / pnorm(1, 0, 1)  - pnorm(-1, 0, 1) / = 0.6826
-
-P(1.96 < X) = / pnorm(1.96, 0, 1) / = 0.9750
-
-P(0 < Y < 10) = / pbinom(9, 10, 0.1) - pbinom(9, 10, 0.1) / = 0.6513
-
-P(Y = 0) = / pbinom(9, 10, 0.1) / = 0.3487
-
-P(0 <= Y <= 10) = / pbinom(9, 10, 0.1) / = 1 
-
-
-### 3)
-
-```{r }
+```{r collapse = TRUE} 
 Xsim <- rnorm(10000, 0, 1)
 Ysim <- rbinom(10000, 10, 0.1)
 
+# P(X < 0) 
 sum(Xsim < 0)/ 10000
 
-(sum(Xsim < 1) - sum(X < -1)) / 10000
+# P(-1 < X < 1) 
+(sum(Xsim < 1) - sum(Xsim < -1)) / 10000
 
-sum(Xsim < 1.96)
+# P(1.96 < X) 
+sum(Xsim < 1.96) / 10000
 
-(sum(Ysim < 10) - sum(Ysim < 1)) /10000
+# P(0 < Y < 10)
+(sum(Ysim < 10) - sum(Ysim < 1)) / 10000
 
+# P(Y = 0) 
 sum(Ysim == 0)
 
-(sum(Ysim <= 10) - sum(Ysim < 0)) /10000
+# P(0 <= Y <= 10)
+(sum(Ysim <= 10) - sum(Ysim < 0)) / 10000
 ```
 
 \newpage 
 
 ## Uppgift 1.5 *Beräkna (icke-triviala) sannolikheter*
 
-### 1)
+### 1) Förväntat antal fel
 
-```{r }
-faults_old <- rbinom(10000, 337, 0.1)
-sum(faults_old)/10000
+```{r collapse = TRUE} 
+# Förväntat antal fel i nuvarande system
+faults_current <- rbinom(10000, 337, 0.1)
+sum(faults_current)/10000
 
+# Förväntat antal fel i det nya systemet
 p_new <- runif(10000, min = 0.02, max = 0.16)
 faults_new <- rbinom(10000, 337, p_new)
 sum(faults_new)/10000
 ```
 
-### 2)
+### 2) Sannolikhet att nuvarande system ger färre fel det nya systemet
 
-```{r }
-sum(faults_old < faults_new)/10000 # 0.41
+```{r collapse = TRUE} 
+sum(faults_current < faults_new)/10000
 ```
 
-### 3)
+Alltså: Det nya systemet ger oftare färre fel.
 
-```{r }
-sum(faults_old > 50)/10000
+### 3) Sannolikhet för fler än 50 fel
 
+```{r collapse = TRUE} 
+# I nuvarande system
+sum(faults_current > 50)/10000
+
+# I det nya systemet
 sum(faults_new > 50)/10000
 ```
 
@@ -330,16 +346,51 @@ sum(faults_new > 50)/10000
 
 ## Uppgift 2.1 *Stora talens lag*
 
-X - Bin(n=10,p=0.2)
-Y - Gamma(alpha=2,beta =2)
+```{r collapse = TRUE} 
+# Parametrar for X (Binomialföredelad)
+n <- 10
+p <- 0.2
+# Parametrar for Y (Gammafördelad)
+alpha = 2
+beta = 2
+```
 
-### 1) 
+### 1) Teoretiska väntevärden
 
-E(X) = n * p = 10 * 0.2 = 2
-E(Y) = alpha / beta = 2 / 2 = 1
+```{r collapse = TRUE} 
+# E(X)
+expected_X = n * p
+expected_X
 
-### 2) 
+#E(Y)
+expected_Y = alpha / beta
+expected_Y
+```
 
+### 2) Simulerade väntevärden 
+
+```{r collapse = TRUE} 
+num_experiments <- c()
+for(exp in 1:3){
+    for(factor in 1:10){
+        num_experiments <- c(num_experiments, factor*10^exp) 
+    }
+}
+
+means_X <- c()
+means_Y <- c()
+for (num in num_experiments){
+    X <- rbinom(num, n, p)
+    means_X <- c(means_X, mean(X))
+    Y <- rgamma(num, alpha, beta)
+    means_Y <- c(means_Y, mean(Y))
+}
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+plot(num_experiments, means_X, type="l")
+plot(num_experiments, means_Y, type="l")
+```
 
 
 \newpage 
