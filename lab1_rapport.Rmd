@@ -242,13 +242,13 @@ normalfördelningen, vilket är väntat.
 
 ### 1) Beräkning: täthetsfunktion vs simulering
 
-Beräknat: 
+Beräknat m.h.a. täthetsfunktion: 
 ```{r }
 Y <- dbinom(10000, size = 10, prob = 0.1)
 # P(Y=0) = / Det 0:te elementet i Y-arrayen / = 0.3487
 ```
 
-Simulerat:
+Beräknat m.h.a. simulering: 
 ```{r collapse=TRUE}
 # Andelen dragningar där y = 0
 Ysim <- rbinom(10000, size = 10, prob = 0.1)
