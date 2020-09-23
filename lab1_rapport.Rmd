@@ -1,7 +1,7 @@
 ---
 title: "Lab 1"
 author: "Regina Hansson (regha434) and Victor Lells (vicle728)"
-date: '2020-09-18'
+date: '2020-09-23'
 output: pdf_document
 toc: true
 toc_depth: 2
@@ -397,12 +397,12 @@ plot(num_experiments, means_Y, type="l")
 
 ## Uppgift 3.1 *Väntevärde och varians*
 
-### 1)
-
 ```{r collapse = TRUE} 
 X <- rexp(10000, rate=10)
 Y <- rpois(10000, lambda=3)
 ```
+
+### 1) Analytisk beräkning av enkla storheter
 
 E(X) = 1/theta = 1/10 = 0.1
 
@@ -412,7 +412,7 @@ Var(X) = 1/theta^2 = 1/100 = 0.01
 
 Var(Y) = lambda = 3
 
-### 2)
+### 2) Simulering av enkla storheter
 
 ```{r collapse = TRUE} 
 mean(X)
@@ -421,7 +421,7 @@ var(X)
 var(Y)
 ```
 
-### 3)
+### 3) Analytisk beräkning av mer komplexa storheter
 
 E(3) = 3
 
@@ -437,7 +437,7 @@ Var(2 * X - 5) = 2 ^ 2 * Var(X) = 4 * 0.01 = 0.04
 
 Var(X + Y) = Var(X) + Var(Y) = 0.01 + 3 = 3.01
 
-### 4)
+### 4) Simulering av mer komplexa storheter
 
 ```{r collapse = TRUE} 
 mean(3)
@@ -452,3 +452,87 @@ var(X + Y)
 \newpage 
 
 ## Uppgift 4.1 *Centrala gränsvärdessatsen*
+
+### 1) Fördelningarna
+
+```{r collapse = TRUE} 
+X <- rpois(1000, lambda=5)
+Y <- rexp(1000, rate=1)
+Z <- rbinom(1000, n=10, p=0.01)
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="33%"}
+hist(X, probability = TRUE) 
+
+hist(Y, probability = TRUE) 
+
+hist(Z, probability = TRUE) 
+```
+
+### 2) Konvergens vid få dragningar
+
+```{r collapse = TRUE} 
+means_X <- c()
+means_Y <- c()
+means_Z <- c()
+for(rep in 1:1000){
+	X <- rpois(10, lambda=5)
+	Y <- rexp(10, rate=1)
+	Z <- rbinom(10, size=10, prob=0.01)
+	means_X <- c(means_X, mean(X))
+	means_Y <- c(means_Y, mean(Y))
+	means_Z <- c(means_Z, mean(Z))
+}
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="33%"}
+hist(means_X, probability = TRUE) 
+
+hist(means_Y, probability = TRUE) 
+
+hist(means_Z, probability = TRUE) 
+```
+
+### 3) Konvergens vid olika (högre) antal dragningar
+
+Som vi ser nedan konvergerar de mot en normalfördelning. 
+
+Den fördelning som har högst standardavvikelse kommer att konvergera snabbast.
+Den extrema motsatsen, med en fördelning med varians 0, kommer ju aldrig att
+bli en normalfördelning. Större varians ger större möjlighet till spridningen
+som krävs för en normalfördelning, och vi vet att en slumpvariabel (dvs mycket
+hög varians) konvergerar snabbt mot en normalfördelning.
+
+Vi har följande standardavvikelser, där vi ser att binomialfördelningen Z har
+markant lägre standardavvikelse än de andra två, och i histogrammen ser vi att
+den konvergerar långsammast. X och Y konvergerar ganska lika snabbt enligt
+histogrammen, men teoretiskt ser vi att poissonfördelningen X bör konvergera
+lite snabbare än exponentialfördelningen Y, eftersom att X har större
+standardavvikelse. 
+
+```{r collapse = TRUE} 
+sd(X)
+sd(Y)
+sd(Z)
+```
+
+```{r collapse = TRUE, fig.show="hold", out.width="33%"}
+means_X <- c()
+means_Y <- c()
+means_Z <- c()
+tries_vector <- c(30, 100, 1000)
+for(tries in tries_vector) {
+	for(rep in 1:1000){
+		X <- rpois(tries, lambda=5)
+		Y <- rexp(tries, rate=1)
+		Z <- rbinom(tries, size=10, prob=0.01)
+		means_X <- c(means_X, mean(X))
+		means_Y <- c(means_Y, mean(Y))
+		means_Z <- c(means_Z, mean(Z))
+	}
+	hist(means_X, probability = TRUE) 
+	hist(means_Y, probability = TRUE) 
+	hist(means_Z, probability = TRUE) 
+}
+```
+
