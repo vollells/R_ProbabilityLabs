@@ -397,6 +397,58 @@ plot(num_experiments, means_Y, type="l")
 
 ## Uppgift 3.1 *Väntevärde och varians*
 
+### 1)
+
+```{r collapse = TRUE} 
+X <- rexp(10000, rate=10)
+Y <- rpois(10000, lambda=3)
+```
+
+E(X) = 1/theta = 1/10 = 0.1
+
+E(Y) = lambda = 3
+
+Var(X) = 1/theta^2 = 1/100 = 0.01
+
+Var(Y) = lambda = 3
+
+### 2)
+
+```{r collapse = TRUE} 
+mean(X)
+mean(Y)
+var(X)
+var(Y)
+```
+
+### 3)
+
+E(3) = 3
+
+E(3X + 2) = 3 * E(X) + 2 = 3 * 0.1 + 2 = 2.3
+
+E(X + Y) = E(X) + E(Y) = 0.1 + 3 = 3.1
+
+E(X * Y) = E(X) * E(Y) = 0.1 * 3 = 0.3
+
+E(3 * X + 2 * Y - 3) = E(3X) + E(2Y) - 3 = 3 * E(X) + 2 * E(Y) - 3 = 3 * 0.1 + 2 * 3 - 3 = 3.3
+
+Var(2 * X - 5) = 2 ^ 2 * Var(X) = 4 * 0.01 = 0.04
+
+Var(X + Y) = Var(X) + Var(Y) = 0.01 + 3 = 3.01
+
+### 4)
+
+```{r collapse = TRUE} 
+mean(3)
+mean(3 * X + 2)
+mean(X + Y)
+mean(X * Y)
+mean(3 * X + 2 * Y - 3)
+var(2 * X - 5)
+var(X + Y)
+```
+
 \newpage 
 
 ## Uppgift 4.1 *Centrala gränsvärdessatsen*
