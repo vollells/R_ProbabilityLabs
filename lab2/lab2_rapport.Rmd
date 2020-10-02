@@ -84,16 +84,25 @@ knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 ### 4)
+% TODO: fraction ^2 (not only mu), root out of log, linebreak
+
 \begin{equation} 
-    \ln{L(\mu, \sigma^2)} = ln{\prod_{i=1}^{n}}
+    \ln{L(\mu, \sigma^2)} = ln(\prod_{i=1}^{n} \frac{1}{\sigma*\sqrt{2\pi}} * e^{- 1/2 * \frac{x_i-\mu}{\sigma}^2})
+	= n * \ln(\frac{1}{\sigma*\sqrt{2\pi}}) + \sum_{i=1}^{n} - 1/2 * \frac{x_i-\mu}{\sigma}^2 * ln{e}
+	= -n * \ln(\sigma*\sqrt{2\pi}) - \frac{1}{2\sigma^2} * \sum_{i=1}^{n} (x_i-\mu)^2
 \end{equation}
 
 ``` {r}
     llnormal <- function(x, mu, sigma2) {
         n <- length(x)
-        p1 <- n * (alpha * log(beta)- lgamma(alpha))
-        p2 <- (alpha - 1)* sum(log(x))
-        p3 <- beta * sum(x)
-        p1 + p2  - p3
+        p1 <- (n/2) * log(2*pi*sigma2) 
+        p2 <- 1/(2*sigma2)
+        p3 <- sum((x - mu)**2)
+        - p1 - p2 * p3
     } 
+
+	#Test
+	llnormal(x1, 2, 1)
 ```
+
+
