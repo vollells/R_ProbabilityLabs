@@ -7,532 +7,93 @@ toc: true
 toc_depth: 2
 ---
 
+<!-- {r, echo=FALSE, fig.show="hold", out.width="50%"} -->
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 \newpage
 
-## Uppgift 1.1 *Simulering av normalfördelning*
+## Uppgift 3.1.1 *Likelihoodfunktioner*
 
-### 1) Visualisera fördelningarna i två histogram. 
+### 1)
 
-Nedan simuleras normalfördelningen med olika antal dragningar.
-
-```{r }
-x1 <- rnorm(100, mean = 10, sd = 4)
-x2 <- rnorm(10000, mean = 10, sd = 4)
+``` {r}
+    llgamma <- function(x, alpha, beta) {
+        n <- length(x)
+        p1 <- n * (alpha * log(beta)- lgamma(alpha))
+        p2 <- (alpha - 1)* sum(log(x))
+        p3 <- beta * sum(x)
+        p1 + p2  - p3
+    } 
 ```
 
-I figurerna nedan visas resultatet av dragningarna som ett histogram tillsammans med täthetsfunktionen.
-
-```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-hist(x1, probability = TRUE) 
-xfit <- seq(0, 20, 0.1) 
-yfit <- dnorm(xfit, mean = 10, sd = 4) 
-lines(xfit, yfit, col="blue", lwd=2) 
-
-hist(x2, probability = TRUE) 
-xfit <- seq(-5, 25, 0.1) 
-yfit <- dnorm(xfit, mean = 10, sd = 4) 
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-### 2) Beskriv skillnaden mellan de olika graferna.
-
-Vi kan se normalfördelningsformen tydligare om vi drar fler värden, t.ex. är
-det mycket tydligare att väntevärdet är 10.
-
-\newpage 
-
-## Uppgift 1.2 *Simulera och visualisera andra fördelningar*
-
-### Diskreta
-
-X1 ~ Bernoulli(p = 0.2)
-
-```{r }
-X1 <- rbinom(10000, size = 1, prob = 0.2)
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(X1, probability = TRUE)
-xfit <- seq(0, 1, 1) 
-yfit <- dbinom(xfit, size=1, prob = 0.2 )
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-X2 ~ Binomial(n = 20, p = 0.1)
-```{r }
-X2 <- rbinom(10000, size = 20, prob = 0.1)
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(X2, probability = TRUE) 
-xfit <- seq(0, 8, 1) 
-yfit <- dbinom(xfit, size=20, prob = 0.1 )
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-X3 ~ Binomial(n = 20, p = 0.5)
-```{r }
-X3 <- rbinom(10000, size = 20, prob = 0.5)
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(X3, probability = TRUE) 
-xfit <- seq(0, 20, 1) 
-yfit <- dbinom(xfit, size=20, prob = 0.5 )
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-X4 ~ Geometrisk(p = 0.1)
-```{r }
-X4 <- rgeom(10000, prob = 0.1) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(X4, probability = TRUE) 
-xfit <- seq(0, 120, 1) 
-yfit <- dgeom(xfit, 0.1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-X5 ~ Poisson(lambda = 0.5)
-```{r }
-X5 <- rpois(10000, lambda = 10) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(X5, probability = TRUE)
-xfit <- seq(0, 25, 1) 
-yfit <- dpois(xfit, 10 )
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-### Kontinuerliga
-
-Y1 ~ Likformig(min = 0, max = 1)
-```{r }
-Y1 <- runif(10000, min = 0, max = 1) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y1, probability = TRUE) 
-xfit <- seq(0, 20, 1) 
-yfit <- dunif(xfit, 0,1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y2 ~ Exponentiell(theta = 3)
-```{r }
-Y2 <- rexp(10000, rate = 3)
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y2, probability = TRUE) 
-xfit <- seq(0, 5, 0.1) 
-yfit <- dexp(xfit, 3)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y3 ~ Gamma(alpha = 2, beta = 1)
-```{r }
-Y3 <- rgamma(10000, shape = 2, scale = 1)
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y3, probability = TRUE) 
-xfit <- seq(0, 20, 1) 
-yfit <- dgamma(xfit, 2,1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y4 ~ Student-t(v = 3)
-```{r }
-Y4 <- rt(10000, df = 3) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y4, probability = TRUE) 
-xfit <- seq(-20, 20, 1) 
-yfit <- dt(xfit, 3 )
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y5 ~ Beta(alpha = 0.1, beta = 0.1)
-```{r }
-Y5 <- rbeta(10000, shape1 = 0.1, shape2 = 0.1) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y5, probability = TRUE) 
-xfit <- seq(0, 1, 0.01) 
-yfit <- dbeta(xfit, 0.1, 0.1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y6 ~ Beta(alpha = 1, beta = 1)
-```{r }
-Y6 <- rbeta(10000, shape1 = 1,   shape2 = 1) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y6, probability = TRUE) 
-xfit <- seq(0, 1, 0.01) 
-yfit <- dbeta(xfit, 1, 1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Y7 ~ Beta(alpha = 10, beta = 5)
-```{r }
-Y7 <- rbeta(10000, shape1 = 10,  shape2 = 5) 
-```
-```{r, echo=FALSE, out.width="75%", fig.align="center"}
-hist(Y7, probability = TRUE)
-xfit <- seq(0, 1, 0.01) 
-yfit <- dbeta(xfit, 10, 5)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-\newpage 
-
-## Uppgift 1.3 *Relation mellan fördelningar*
-
-### 1) Simulera och visualisera respektive fördelning
-
-```{r }
-X <- rbinom(1000, size = 10000, prob = 0.001)
-Y <- rt(1000, df = 10000) 
-```
-
-```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-hist(X, probability = TRUE) 
-xfit <- seq(0, 20, 1) 
-yfit <- dbinom(xfit, 10000, 0.001)
-lines(xfit, yfit, col="blue", lwd=2) 
-
-hist(Y, probability = TRUE) 
-xfit <- seq(-5, 5, 1) 
-yfit <- dt(xfit, 10000)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-### 2) Konvergerar mot..?
-
-Binominal konvergerar mot en Poissonfördelning ( med lambda = n \* p)
-
-Student-t konvergerar mot en standardnormalfördelning (dvs mean = 0, std = 1)
-
-### 3) Simulering av och jämförelse med fördelningarna de konvergerar mot
-
-```{r }
-X_konvergerad <- rpois(1000, lambda = 10) 
-Y_konvergerad <- rnorm(1000, mean = 0, sd = 1)
-```
-
-```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-hist(X_konvergerad, probability = TRUE)
-xfit <- seq(0, 25, 1) 
-yfit <- dpois(xfit, 10)
-lines(xfit, yfit, col="blue", lwd=2) 
-
-hist(Y_konvergerad, probability = TRUE)
-xfit <- seq(-5, 5, 1) 
-yfit <- dnorm(xfit, 0, 1)
-lines(xfit, yfit, col="blue", lwd=2) 
-```
-
-Vi ser en tydlig likhet mellan den ursprungliga fördelningen och den fördelning
-den konvergerar mot. Student-t har dock en spetsigare topp och tyngre svans än
-normalfördelningen, vilket är väntat.
-
-\newpage 
-
-## Uppgift 1.4 *Analytisk sannolikhet och approximation med Monte Carlo metoder*
-
-### 1) Beräkning: täthetsfunktion vs simulering
-
-Beräknat m.h.a. täthetsfunktion: 
-```{r }
-Y <- dbinom(10000, size = 10, prob = 0.1)
-# P(Y=0) = / Det 0:te elementet i Y-arrayen / = 0.3487
-```
-
-Beräknat m.h.a. simulering: 
-```{r collapse=TRUE}
-# Andelen dragningar där y = 0
-Ysim <- rbinom(10000, size = 10, prob = 0.1)
-result <- sum(Ysim == 0)/10000
-# resultatet varierar (med ca 0.01) mellan olika dragningar, såklart
-result
-```
-
-### 2) Beräkning av sannolikheter med kumulativ fördelningsfunktion
-
-```{r collapse = TRUE} 
-X <- pnorm(10000, mean = 0, sd = 1)
-Y <- pbinom(10000, size = 10, prob = 0.1)
-
-# P(X < 0) 
-pnorm(0, 0, 1)
-
-# P(-1 < X < 1) 
-pnorm(1, 0, 1)  - pnorm(-1, 0, 1)
-
-# P(1.96 < X) 
-pnorm(1.96, 0, 1)
-
-# P(0 < Y < 10)
-pbinom(9, 10, 0.1) - pbinom(0, 10, 0.1)
-
-# P(Y = 0) 
-pbinom(0, 10, 0.1)
-
-# P(0 <= Y <= 10)
-pbinom(10, 10, 0.1)
-```
-
-### 3) Beräkning av sannolikheter med simulering 
-
-```{r collapse = TRUE} 
-Xsim <- rnorm(10000, 0, 1)
-Ysim <- rbinom(10000, 10, 0.1)
-
-# P(X < 0) 
-sum(Xsim < 0)/ 10000
-
-# P(-1 < X < 1) 
-(sum(Xsim < 1) - sum(Xsim < -1)) / 10000
-
-# P(1.96 < X) 
-sum(Xsim < 1.96) / 10000
-
-# P(0 < Y < 10)
-(sum(Ysim < 10) - sum(Ysim < 1)) / 10000
-
-# P(Y = 0) 
-sum(Ysim == 0)
-
-# P(0 <= Y <= 10)
-(sum(Ysim <= 10) - sum(Ysim < 0)) / 10000
-```
-
-\newpage 
-
-## Uppgift 1.5 *Beräkna (icke-triviala) sannolikheter*
-
-### 1) Förväntat antal fel
-
-```{r collapse = TRUE} 
-# Förväntat antal fel i nuvarande system
-faults_current <- rbinom(10000, 337, 0.1)
-sum(faults_current)/10000
-
-# Förväntat antal fel i det nya systemet
-p_new <- runif(10000, min = 0.02, max = 0.16)
-faults_new <- rbinom(10000, 337, p_new)
-sum(faults_new)/10000
-```
-
-### 2) Sannolikhet att nuvarande system ger färre fel det nya systemet
-
-```{r collapse = TRUE} 
-sum(faults_current < faults_new)/10000
-```
-
-Alltså: Det nya systemet ger oftare färre fel.
-
-### 3) Sannolikhet för fler än 50 fel
-
-```{r collapse = TRUE} 
-# I nuvarande system
-sum(faults_current > 50)/10000
-
-# I det nya systemet
-sum(faults_new > 50)/10000
-```
-
-\newpage 
-
-## Uppgift 2.1 *Stora talens lag*
-
-```{r collapse = TRUE} 
-# Parametrar for X (Binomialföredelad)
-n <- 10
-p <- 0.2
-# Parametrar for Y (Gammafördelad)
-alpha = 2
-beta = 2
-```
-
-### 1) Teoretiska väntevärden
-
-```{r collapse = TRUE} 
-# E(X)
-expected_X = n * p
-expected_X
-
-#E(Y)
-expected_Y = alpha / beta
-expected_Y
-```
-
-### 2) Simulerade väntevärden 
-
-```{r collapse = TRUE} 
-num_experiments <- c()
-for(exp in 1:3){
-    for(factor in 1:10){
-        num_experiments <- c(num_experiments, factor*10^exp) 
+### 2)
+``` {r}
+    set.seed(4711)
+    x1 <- rgamma(n=10, shape=4, scale=1)
+    x2 <- rgamma(n=100, shape=4, scale=1)
+    beta <- 0.01
+    beta_list <-c()
+    results1 <- c()
+    results2 <- c()
+    
+    while (beta <= 3){
+        results1 <- c(results1, llgamma(x = x1, alpha = 4, beta = beta))
+        results2 <- c(results2, llgamma(x = x2, alpha = 4, beta = beta))
+        
+        beta_list <- c(beta_list, beta)
+        beta <- beta + 0.01
     }
-}
-
-means_X <- c()
-means_Y <- c()
-for (num in num_experiments){
-    X <- rbinom(num, n, p)
-    means_X <- c(means_X, mean(X))
-    Y <- rgamma(num, alpha, beta)
-    means_Y <- c(means_Y, mean(Y))
-}
+    # Corresponding beta values to the maximal likelihood 
+    beta_list[which.max(results1)]
+    beta_list[which.max(results2)]
 ```
-
+    
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-plot(num_experiments, means_X, type="l")
-plot(num_experiments, means_Y, type="l")
+    plot(beta_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Beta", ylab="log-likelihood")
+    plot(beta_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Beta", ylab="log-likelihood")
 ```
 
+\newpage
 
-\newpage 
-
-## Uppgift 3.1 *Väntevärde och varians*
-
-```{r collapse = TRUE} 
-X <- rexp(10000, rate=10)
-Y <- rpois(10000, lambda=3)
+### 3)
+``` {r}
+    alpha <- 0.01
+    alpha_list <-c()
+    results1 <- c()
+    results2 <- c()
+    
+    while (alpha <= 10){
+        results1 <- c(results1, llgamma(x = x1, alpha = alpha, beta = 1))
+        results2 <- c(results2, llgamma(x = x2, alpha = alpha, beta = 1))
+        
+        alpha_list <- c(alpha_list, alpha)
+        alpha <- alpha + 0.01
+    }
+    # Corresponding alpha values to the maximal likelihood 
+    alpha_list[which.max(results1)]
+    alpha_list[which.max(results2)]
+```
+    
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+    plot(alpha_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Alpha", ylab="log-likelihood")
+    plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Alpha", ylab="log-likelihood")
 ```
 
-### 1) Analytisk beräkning av enkla storheter
+### 4)
+\begin{equation} 
+    \ln{L(\mu, \sigma^2)} = ln{\prod_{i=1}^{n}}
+\end{equation}
 
-E(X) = 1/theta = 1/10 = 0.1
-
-E(Y) = lambda = 3
-
-Var(X) = 1/theta^2 = 1/100 = 0.01
-
-Var(Y) = lambda = 3
-
-### 2) Simulering av enkla storheter
-
-```{r collapse = TRUE} 
-mean(X)
-mean(Y)
-var(X)
-var(Y)
+``` {r}
+    llnormal <- function(x, mu, sigma2) {
+        n <- length(x)
+        p1 <- n * (alpha * log(beta)- lgamma(alpha))
+        p2 <- (alpha - 1)* sum(log(x))
+        p3 <- beta * sum(x)
+        p1 + p2  - p3
+    } 
 ```
-
-### 3) Analytisk beräkning av mer komplexa storheter
-
-E(3) = 3
-
-E(3X + 2) = 3 * E(X) + 2 = 3 * 0.1 + 2 = 2.3
-
-E(X + Y) = E(X) + E(Y) = 0.1 + 3 = 3.1
-
-E(X * Y) = E(X) * E(Y) = 0.1 * 3 = 0.3
-
-E(3 * X + 2 * Y - 3) = E(3X) + E(2Y) - 3 = 3 * E(X) + 2 * E(Y) - 3 = 3 * 0.1 + 2 * 3 - 3 = 3.3
-
-Var(2 * X - 5) = 2 ^ 2 * Var(X) = 4 * 0.01 = 0.04
-
-Var(X + Y) = Var(X) + Var(Y) = 0.01 + 3 = 3.01
-
-### 4) Simulering av mer komplexa storheter
-
-```{r collapse = TRUE} 
-mean(3)
-mean(3 * X + 2)
-mean(X + Y)
-mean(X * Y)
-mean(3 * X + 2 * Y - 3)
-var(2 * X - 5)
-var(X + Y)
-```
-
-\newpage 
-
-## Uppgift 4.1 *Centrala gränsvärdessatsen*
-
-### 1) Fördelningarna
-
-```{r collapse = TRUE} 
-X <- rpois(1000, lambda=5)
-Y <- rexp(1000, rate=1)
-Z <- rbinom(1000, n=10, p=0.01)
-```
-
-```{r, echo=FALSE, fig.show="hold", out.width="33%"}
-hist(X, probability = TRUE) 
-
-hist(Y, probability = TRUE) 
-
-hist(Z, probability = TRUE) 
-```
-
-### 2) Konvergens vid få dragningar
-
-```{r collapse = TRUE} 
-means_X <- c()
-means_Y <- c()
-means_Z <- c()
-for(rep in 1:1000){
-	X <- rpois(10, lambda=5)
-	Y <- rexp(10, rate=1)
-	Z <- rbinom(10, size=10, prob=0.01)
-	means_X <- c(means_X, mean(X))
-	means_Y <- c(means_Y, mean(Y))
-	means_Z <- c(means_Z, mean(Z))
-}
-```
-
-```{r, echo=FALSE, fig.show="hold", out.width="33%"}
-hist(means_X, probability = TRUE) 
-
-hist(means_Y, probability = TRUE) 
-
-hist(means_Z, probability = TRUE) 
-```
-
-### 3) Konvergens vid olika (högre) antal dragningar
-
-Som vi ser nedan konvergerar de mot en normalfördelning. 
-
-Den fördelning som har högst standardavvikelse kommer att konvergera snabbast.
-Den extrema motsatsen, med en fördelning med varians 0, kommer ju aldrig att
-bli en normalfördelning. Större varians ger större möjlighet till spridningen
-som krävs för en normalfördelning, och vi vet att en slumpvariabel (dvs mycket
-hög varians) konvergerar snabbt mot en normalfördelning.
-
-Vi har följande standardavvikelser, där vi ser att binomialfördelningen Z har
-markant lägre standardavvikelse än de andra två, och i histogrammen ser vi att
-den konvergerar långsammast. X och Y konvergerar ganska lika snabbt enligt
-histogrammen, men teoretiskt ser vi att poissonfördelningen X bör konvergera
-lite snabbare än exponentialfördelningen Y, eftersom att X har större
-standardavvikelse. 
-
-```{r collapse = TRUE} 
-sd(X)
-sd(Y)
-sd(Z)
-```
-
-```{r collapse = TRUE, fig.show="hold", out.width="33%"}
-means_X <- c()
-means_Y <- c()
-means_Z <- c()
-tries_vector <- c(30, 100, 1000)
-for(tries in tries_vector) {
-	for(rep in 1:1000){
-		X <- rpois(tries, lambda=5)
-		Y <- rexp(tries, rate=1)
-		Z <- rbinom(tries, size=10, prob=0.01)
-		means_X <- c(means_X, mean(X))
-		means_Y <- c(means_Y, mean(Y))
-		means_Z <- c(means_Z, mean(Z))
-	}
-	hist(means_X, probability = TRUE) 
-	hist(means_Y, probability = TRUE) 
-	hist(means_Z, probability = TRUE) 
-}
-```
-
