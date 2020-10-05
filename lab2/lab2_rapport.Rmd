@@ -48,13 +48,15 @@ while (beta <= 3){
 	beta <- beta + 0.01
 }
 # Corresponding beta values to the maximal likelihood 
-beta_list[which.max(results1)]
-beta_list[which.max(results2)]
+x1_beta <- beta_list[which.max(results1)]
+x1_beta
+x2_beta <- beta_list[which.max(results2)]
+x2_beta
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-plot(beta_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Beta", ylab="log-likelihood")
-plot(beta_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Beta", ylab="log-likelihood")
+plot(beta_list, results1, type = "l", main= "Loglikelihood of x1 (model: gamma)", xlab = "Beta", ylab="log-likelihood")
+plot(beta_list, results2, type = "l", main= "Loglikelihood of x2 (model: gamma)", xlab = "Beta", ylab="log-likelihood")
 ```
 
 \newpage
@@ -74,8 +76,10 @@ while (alpha <= 10){
 	alpha <- alpha + 0.01
 }
 # Corresponding alpha values to the maximal likelihood 
-alpha_list[which.max(results1)]
-alpha_list[which.max(results2)]
+x1_alpha <- alpha_list[which.max(results1)]
+x1_alpha 
+x2_alpha <- alpha_list[which.max(results2)]
+x2_alpha 
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
@@ -126,14 +130,34 @@ while (mu <= 10){
 	mu_list <- c(mu_list, mu)
 	mu <- mu + 0.01
 }
-# Corresponding alpha values to the maximal likelihood 
-mu_list[which.max(results1)]
-mu_list[which.max(results2)]
+# Corresponding mu values to the maximal likelihood 
+x1_mu <- mu_list[which.max(results1)]
+x2_mu <- mu_list[which.max(results2)]
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-    plot(mu_list, results1, type = "l", main= "Loglikelihood of x1 (model: normal)", xlab = "Mu", ylab="log-likelihood")
-plot(mu_list, results2, type = "l", main= "Loglikelihood of x2 (model: normal)", xlab = "Mu", ylab="log-likelihood")
+plot(mu_list, results1, type = "l", main= "Loglikelihood of x1 ", xlab = "Mu", ylab="log-likelihood")
+plot(mu_list, results2, type = "l", main= "Loglikelihood of x2 ", xlab = "Mu", ylab="log-likelihood")
+```
+\newpage
+
+#### *Jämförelse*
+
+Här är våra grafer!
+\newline 
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+n <- 1000
+hist(rgamma(n, x1_alpha, x1_beta))
+m <- length(x2)
+hist( rgamma(n, x2_alpha, x2_beta))
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+
+hist( rnorm(n, x1_mu, 1))
+m <- length(x2)
+hist( rnorm(n, x2_mu, 1))
 ```
 
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
@@ -141,4 +165,19 @@ hist(x1, probability = TRUE)
 hist(x2, probability = TRUE) 
 ```
 
-Enligt graferna tycker vi att ...
+
+Enligt graferna tycker vi att ingen av dem passar datamaterialet bra. Speciellt på x1. 
+Men vi tycker att gammafördelningen passar bättre på x2. 
+
+
+## Uppgift 3.2.1 *Punktskattningar med MLE i gammafördelning*
+
+### 1)
+``` {r}
+gamma_beta_mle <- function(x,alpha) {
+	n <- length(x)
+    n * alpha / sum(x)
+}
+gamma_beta_mle(x1, 4)
+gamma_beta_mle(x2, 4)
+```
