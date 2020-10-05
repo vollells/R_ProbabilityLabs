@@ -47,7 +47,7 @@ while (beta <= 3){
 	beta_list <- c(beta_list, beta)
 	beta <- beta + 0.01
 }
-# Corresponding beta values to the maximal likelihood 
+# Beta values corresponding to the maximal likelihood 
 x1_beta <- beta_list[which.max(results1)]
 x1_beta
 x2_beta <- beta_list[which.max(results2)]
@@ -75,7 +75,7 @@ while (alpha <= 10){
 	alpha_list <- c(alpha_list, alpha)
 	alpha <- alpha + 0.01
 }
-# Corresponding alpha values to the maximal likelihood 
+# Alpha values corresponding to the maximal likelihood 
 x1_alpha <- alpha_list[which.max(results1)]
 x1_alpha 
 x2_alpha <- alpha_list[which.max(results2)]
@@ -321,27 +321,14 @@ Det ser normalfördelat ut kring det sanna värdet (speciellt vid 10000 dragning
 
 ### 2)
 ```{r}
-beta1_mle <- c()
-beta2_mle <- c()
-mu1_mle <- c()
-mu2_mle <- c()
-sigma21_mle <- c()
-sigma22_mle <- c()
-
-alpha <- 4
-beta <- 1
-mu <- 10
-sigma2 <- 4
-
 x1 <- rgamma(10, alpha, beta)
 x2 <- rgamma(10000, alpha, beta)
 y1 <- rnorm(10, mu, sqrt(sigma2))
 y2 <- rnorm(10000, mu, sqrt(sigma2))
 
-
 for(i in 1:2000) {
-	beta1_mle[i] <- gamma_beta_mle(x = sample(x1, 10, replace =TRUE), alpha)
-	beta2_mle[i] <- gamma_beta_mle(x = sample(x2, 10000, replace =TRUE), alpha)
+	beta1_mle[i] <- gamma_beta_mle(sample(x1, 10, replace =TRUE), alpha)
+	beta2_mle[i] <- gamma_beta_mle(sample(x2, 10000, replace =TRUE), alpha)
 	mu1_mle[i] <- norm_mu_mle(sample(y1, 10, replace =TRUE))
 	mu2_mle[i] <- norm_mu_mle(sample(y2, 10000, replace =TRUE))
 	sigma21_mle[i] <- norm_sigma2_mle(sample(y1, 10, replace =TRUE))
