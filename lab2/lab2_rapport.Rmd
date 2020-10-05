@@ -79,8 +79,8 @@ knitr::opts_chunk$set(collapse = TRUE)
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-    plot(alpha_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Alpha", ylab="log-likelihood")
-    plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Alpha", ylab="log-likelihood")
+    plot(alpha_list, results1, type = "l", main= "Loglikelihood of x1 (model: gamma)", xlab = "Alpha", ylab="log-likelihood")
+    plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2 (model: gamma)", xlab = "Alpha", ylab="log-likelihood")
 ```
 
 ### 4)
@@ -108,11 +108,37 @@ Samt vår implementation i R:
         p3 <- sum((x - mu)**2)
         - p1 - p2 * p3
     } 
-
-	#Test
-	llnormal(x1, 2, 1)
 ```
 
 ### 5)
 
 
+``` {r}
+    mu <- 0.01
+    mu_list <-c()
+    results1 <- c()
+    results2 <- c()
+    
+    while (mu <= 10){
+        results1 <- c(results1, llnormal(x = x1, mu = mu, sigma2 = 1))
+        results2 <- c(results2, llnormal(x = x2, mu = mu, sigma2 = 1))
+        
+        mu_list <- c(mu_list, mu)
+        mu <- mu + 0.01
+    }
+    # Corresponding alpha values to the maximal likelihood 
+    mu_list[which.max(results1)]
+    mu_list[which.max(results2)]
+```
+    
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+    plot(mu_list, results1, type = "l", main= "Loglikelihood of x1 (model: normal)", xlab = "Mu", ylab="log-likelihood")
+    plot(mu_list, results2, type = "l", main= "Loglikelihood of x2 (model: normal)", xlab = "Mu", ylab="log-likelihood")
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+	hist(x1, probability = TRUE) 
+	hist(x2, probability = TRUE) 
+```
+
+Enligt graferna tycker vi att ...
