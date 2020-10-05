@@ -88,8 +88,6 @@ plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2 (model: gamma)
 ```
 
 ### 4)
-% TODO: root out of log
-
 Här är vår härledning:
 
 \begin{flalign} 
@@ -352,4 +350,5 @@ hist(sigma21_mle, probability = TRUE)
 hist(sigma22_mle, probability = TRUE) 
 ```
 
-Det blir mer chaotiskt, eftersom man har ett mer realistiskt scenario och därav inte blir lika normalfördelat. 
+Det är en väldigt enkel metod som här ger tillfredsställande resultat (mycket
+likt resultaten när vi använde hela populationen).
