@@ -170,7 +170,7 @@ Enligt graferna tycker vi att ingen av dem passar datamaterialet bra. Speciellt 
 Men vi tycker att gammafördelningen passar bättre på x2. 
 
 
-## Uppgift 3.2.1 *Punktskattningar med MLE i gammafördelning*
+## Uppgift 3.2.1 *Punktskattning med MLE i gammafördelning*
 
 ### 1)
 ``` {r}
@@ -180,4 +180,88 @@ gamma_beta_mle <- function(x,alpha) {
 }
 gamma_beta_mle(x1, 4)
 gamma_beta_mle(x2, 4)
+
+# Jämfört med vår uppskattning mha likelihood:
+x1_beta
+x2_beta
+```
+
+Vi ser i koden ovan att de två sätten att ta fram det bästa beta-värdet ger mycket lika resultat.
+
+\newpage
+
+## Uppgift 3.2.2 *Punktskattning med MLE i normalfördelning*
+
+### 1)
+
+``` {r}
+norm_mu_mle <- function(x) {
+	n <- length(x)
+	sum(x) / n
+}
+
+norm_sigma2_mle <- function(x) {
+	n <- length(x)
+	mean_x <- mean(x)
+	sum((x - mean_x)^2) / n
+}
+```
+
+### 2)
+
+``` {r}
+set.seed(42)
+y1 <- rnorm(10, mean = 10, sd = sqrt(4))
+y2 <- rnorm(10000, mean = 10, sd = sqrt(4))
+
+# Skattning av my
+norm_mu_mle(y1)
+norm_mu_mle(y2)
+
+# Skattning av sigma2
+norm_sigma2_mle(y1)
+norm_sigma2_mle(y2)
+```
+
+Vi vet ju att my = 10 och sigma2 = 4, och ser som väntat att vi kommer närmast
+detta sanna värde när vi gör 10000 dragningar. Detta är för att sannolikheten
+att få en "fin" normalfördelning ökar desto fler dragningar vi gör (avvikande
+värden "göms i mängden").
+
+\newpage 
+
+## Uppgift 3.3.1 *Loglikelihoodfunktionen for betafördelningen*
+
+### 1)
+
+``` {r}
+llbeta <- function(par=c(2,1), x) {
+	alpha <- par[1]
+	beta <- par[2]
+	n <- length(x)
+	a = (alpha - 1) * sum(log(x))
+	b = (beta - 1) * sum(log(1 - x))
+	c = n * lbeta(alpha, beta)
+	res <- a + b - c
+	-res
+}
+```
+
+### 2)
+
+```{r}
+alpha <- 0.2
+beta <- 2
+z <- rbeta(100, alpha, beta)
+hist(z)
+```
+
+### 3)
+
+```{r}
+opt_res <- optim(par=c(0,0), fn=llbeta, x=z, method="L-BFGS-B", 
+				 lower=c(.Machine$double.eps, .Machine$double.eps))
+
+# Skattade värden för alpha, beta
+opt_res$par
 ```
