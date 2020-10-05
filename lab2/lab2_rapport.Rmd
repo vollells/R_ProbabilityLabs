@@ -284,17 +284,17 @@ mu <- 10
 sigma2 <- 4
 
 for(i in 1:2000) {
-	x1 <- rgamma(10, alpha, beta)
-	x2 <- rgamma(10000, alpha, beta)
-	beta1_mle[i] <- gamma_beta_mle(x1, alpha)
+    x1 <- rgamma(10, alpha, beta)
+    x2 <- rgamma(10000, alpha, beta)
+    beta1_mle[i] <- gamma_beta_mle(x1, alpha)
 	beta2_mle[i] <- gamma_beta_mle(x2, alpha)
 
-	y1 <- rnorm(10, mu, sqrt(sigma2))
-	y2 <- rnorm(10000, mu, sqrt(sigma2))
+    y1 <- rnorm(10, mu, sqrt(sigma2))
+    y2 <- rnorm(10000, mu, sqrt(sigma2))
 	mu1_mle[i] <- norm_mu_mle(y1)
 	mu2_mle[i] <- norm_mu_mle(y2)
-	sigma21_mle <- norm_sigma2_mle(y1)
-	sigma22_mle <- norm_sigma2_mle(y2)
+	sigma21_mle[i] <- norm_sigma2_mle(y1)
+	sigma22_mle[i] <- norm_sigma2_mle(y2)
 }
 ```
 
@@ -317,4 +317,52 @@ hist(sigma22_mle, probability = TRUE)
 
 Det ser normalfördelat ut kring det sanna värdet (speciellt vid 10000 dragningar).
 
+\newpage
+
 ### 2)
+```{r}
+beta1_mle <- c()
+beta2_mle <- c()
+mu1_mle <- c()
+mu2_mle <- c()
+sigma21_mle <- c()
+sigma22_mle <- c()
+
+alpha <- 4
+beta <- 1
+mu <- 10
+sigma2 <- 4
+
+x1 <- rgamma(10, alpha, beta)
+x2 <- rgamma(10000, alpha, beta)
+y1 <- rnorm(10, mu, sqrt(sigma2))
+y2 <- rnorm(10000, mu, sqrt(sigma2))
+
+
+for(i in 1:2000) {
+	beta1_mle[i] <- gamma_beta_mle(x = sample(x1, 10, replace =TRUE), alpha)
+	beta2_mle[i] <- gamma_beta_mle(x = sample(x2, 10000, replace =TRUE), alpha)
+	mu1_mle[i] <- norm_mu_mle(sample(y1, 10, replace =TRUE))
+	mu2_mle[i] <- norm_mu_mle(sample(y2, 10000, replace =TRUE))
+	sigma21_mle[i] <- norm_sigma2_mle(sample(y1, 10, replace =TRUE))
+	sigma22_mle[i] <- norm_sigma2_mle(sample(y2, 10000, replace =TRUE))
+}
+```
+\newpage
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+hist(beta1_mle, probability = TRUE) 
+hist(beta2_mle, probability = TRUE) 
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+hist(mu1_mle, probability = TRUE) 
+hist(mu2_mle, probability = TRUE) 
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
+hist(sigma21_mle, probability = TRUE) 
+hist(sigma22_mle, probability = TRUE) 
+```
+
+Det blir mer chaotiskt, eftersom man har ett mer realistiskt scenario och därav inte blir lika normalfördelat. 
