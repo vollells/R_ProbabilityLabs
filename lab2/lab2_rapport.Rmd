@@ -1,7 +1,7 @@
 ---
-title: "Lab 1"
-author: "Regina Hansson (regha434) and Victor Lells (vicle728)"
-date: '2020-09-23'
+title: "Lab 2"
+author: "Regina Hansson (regha434) och Victor Lells (vicle728)"
+date: '2020-10-05'
 output: pdf_document
 toc: true
 toc_depth: 2
@@ -47,7 +47,7 @@ while (beta <= 3){
 	beta_list <- c(beta_list, beta)
 	beta <- beta + 0.01
 }
-# Beta values corresponding to the maximal likelihood 
+# Betavärden motsvarande maximal likelihood
 x1_beta <- beta_list[which.max(results1)]
 x1_beta
 x2_beta <- beta_list[which.max(results2)]
@@ -55,8 +55,8 @@ x2_beta
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-plot(beta_list, results1, type = "l", main= "Loglikelihood of x1 (model: gamma)", xlab = "Beta", ylab="log-likelihood")
-plot(beta_list, results2, type = "l", main= "Loglikelihood of x2 (model: gamma)", xlab = "Beta", ylab="log-likelihood")
+plot(beta_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Beta", ylab="log-likelihood")
+plot(beta_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Beta", ylab="log-likelihood")
 ```
 
 \newpage
@@ -75,7 +75,7 @@ while (alpha <= 10){
 	alpha_list <- c(alpha_list, alpha)
 	alpha <- alpha + 0.01
 }
-# Alpha values corresponding to the maximal likelihood 
+# Alphavärden motsvarande maximal likelihood
 x1_alpha <- alpha_list[which.max(results1)]
 x1_alpha 
 x2_alpha <- alpha_list[which.max(results2)]
@@ -83,8 +83,8 @@ x2_alpha
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
-plot(alpha_list, results1, type = "l", main= "Loglikelihood of x1 (model: gamma)", xlab = "Alpha", ylab="log-likelihood")
-plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2 (model: gamma)", xlab = "Alpha", ylab="log-likelihood")
+plot(alpha_list, results1, type = "l", main= "Loglikelihood of x1", xlab = "Alpha", ylab="log-likelihood")
+plot(alpha_list, results2, type = "l", main= "Loglikelihood of x2", xlab = "Alpha", ylab="log-likelihood")
 ```
 
 ### 4)
@@ -128,9 +128,11 @@ while (mu <= 10){
 	mu_list <- c(mu_list, mu)
 	mu <- mu + 0.01
 }
-# Corresponding mu values to the maximal likelihood 
+# My-värden motsvarande maximal likelihood
 x1_mu <- mu_list[which.max(results1)]
+x1_mu
 x2_mu <- mu_list[which.max(results2)]
+x2_mu
 ```
     
 ```{r, echo=FALSE, fig.show="hold", out.width="50%"}
@@ -165,8 +167,9 @@ hist(x2, probability = TRUE)
 
 
 Enligt graferna tycker vi att ingen av dem passar datamaterialet bra. Speciellt på x1. 
-Men vi tycker att gammafördelningen passar bättre på x2. 
+Men vi tycker att gammafördelningen passar bättre på x2, för de har båda en tung svans åt höger.
 
+\newpage
 
 ## Uppgift 3.2.1 *Punktskattning med MLE i gammafördelning*
 
