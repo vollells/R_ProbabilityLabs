@@ -20,23 +20,130 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 ### 1)
 
-``` {r}
-hej <- c()
+``` {r, out.width="50%"}
+sigma <- 1
+v <- 1
+interval <- seq(-5, 15, by=0.5)
+prior <- dt(x=interval, df=v)
+plot(interval, prior, type="l")
 ```
 
 ### 2)
+
+``` {r}
+data <- c(11.3710, 9.4353, 10.3631, 10.6329, 10.4043, 9.8939, 11.5115)
+```
+``` {r, echo=FALSE, out.width="50%"}
+hist(data, xlim=range(-5, 15))
+```
+
 ### 3)
+
+``` {r}
+normal_log_likelihood <- function(mu, data) {
+	n <- length(data)
+	p1 <- (n/2) * log(2*pi) 
+	p2 <- 1/2
+	p3 <- sum((data - mu)**2)
+	- p1 - p2 * p3
+}
+```
+
+``` {r, out.width="50%"}
+lliks <- c()
+for (mu in interval) {
+	lliks <- c(lliks, normal_log_likelihood(mu, data))
+}
+
+plot(interval, lliks, type="l")
+```
+
 ### 4)
+
+% TODO: In med härledning
+
 ### 5)
+
+``` {r}
+posterior <- lliks * prior
+```
+
+``` {r, echo=FALSE, out.width="50%"}
+plot(interval, posterior, type="l")
+```
+
 
 \newpage
 
 ## Uppgift 3.2.1 *Binomialmodell med beta-prior: Produkt A eller B?*
 
 ### 1)
+
+Vi väljer parametrar (samma för både A och B) som gör att Betafördelningen
+liknar en normalfördelning, dvs $alpha$ = 2 och $beta$ = 2 (ty de behöver vara
+störra än 1 och lika).
+
+``` {r, out.width="50%"}
+alpha <- 2
+beta <- 2
+random <- dbeta(seq(0,1, by=0.1), alpha, beta)
+hist(random)
+```
+
 ### 2)
+
+``` {r}
+xA <- c(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0)
+xB <- c(1, 1, 0)
+k <- 1
+
+# Posterior-parametrar
+alpha_xA <- alpha + sum(xA)
+beta_xA <- beta + length(xA)*k - sum(xA)
+alpha_xB <- alpha + sum(xB)
+beta_xB <- beta + length(xB)*k - sum(xB)
+
+expected_A <- alpha_xA/ (alpha_xA / beta_xA)
+expected_B <- alpha_xB/ (alpha_xB / beta_xB)
+
+expected_A
+expected_B
+``` 
+
+Produkt A förväntas ha 7 intresserade av 13, medan produkt B förväntas ha 3 av
+3 instresserade. Produkt B verkar alltså vara det bästa valet.
+
 ### 3)
 
+``` {r, fig.show="hold", out.width="50%"}
+n <- 87
+pA <- mean(rbeta(1000, alpha_xA, beta_xA))
+pB <- mean(rbeta(1000, alpha_xB, beta_xB))
+
+XA <- rbinom(1000, n, pA)
+XB <- rbinom(1000, n, pB)
+
+hist(XA)
+hist(XB)
+``` 
+
+### 3a)
+
+``` {r}
+# Produkt A
+sum(XA > 40) / length(XA)
+# Produkt B
+sum(XB > 40) / length(XB)
+``` 
+
+### 3b)
+
+``` {r}
+# Produkt A
+pA * n
+# Produkt B
+pB * n
+``` 
 \newpage
 
 ## Uppgift 3.3.1 *Multinomialmodell med Dirichlet-prior: Analys av opinionsundersökningar*
