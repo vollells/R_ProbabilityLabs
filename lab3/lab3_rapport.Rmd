@@ -1,0 +1,45 @@
+---
+title: "Lab 3"
+author: "Regina Hansson (regha434) och Victor Lells (vicle728)"
+date: '2020-10-09'
+output: pdf_document
+toc: true
+toc_depth: 2
+---
+
+<!-- {r, echo=FALSE, fig.show="hold", out.width="50%"} -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+\newpage
+
+## Uppgift 3.1.1 *Bayes sats och aposteriorifördelningen: Visualisera posteriorn*
+
+### 1)
+
+``` {r}
+hej <- c()
+```
+
+### 2)
+### 3)
+### 4)
+### 5)
+
+\newpage
+
+## Uppgift 3.2.1 *Binomialmodell med beta-prior: Produkt A eller B?*
+
+### 1)
+### 2)
+### 3)
+
+\newpage
+
+## Uppgift 3.3.1 *Multinomialmodell med Dirichlet-prior: Analys av opinionsundersökningar*
+### 1)
+### 2)
+### 3)
