@@ -60,7 +60,7 @@ plot(interval, lliks, type="l")
 
 ### 4)
 
-% TODO: In med härledning
+![Vår härledning av posterior](härledning.jpg)
 
 ### 5)
 
@@ -111,7 +111,7 @@ expected_B
 ``` 
 
 Produkt A förväntas ha 7 intresserade av 13, medan produkt B förväntas ha 3 av
-3 instresserade. Produkt B verkar ha den högsta förväntade proportionen intresserade.
+3 intresserade. Produkt B verkar ha den högsta förväntade proportionen intresserade.
 
 ### 3)
 
