@@ -81,12 +81,12 @@ plot(interval, posterior, type="l")
 
 Vi väljer parametrar (samma för både A och B) som gör att Betafördelningen
 liknar en normalfördelning, dvs $alpha$ = 2 och $beta$ = 2 (ty de behöver vara
-störra än 1 och lika).
+störra än 1 och lika). Detta borde ge att 50% gillar den och 50% inte gör det.
 
 ``` {r, out.width="50%"}
 alpha <- 2
 beta <- 2
-random <- dbeta(seq(0,1, by=0.1), alpha, beta)
+random <- rbeta(10000, alpha, beta)
 hist(random)
 ```
 
@@ -111,7 +111,7 @@ expected_B
 ``` 
 
 Produkt A förväntas ha 7 intresserade av 13, medan produkt B förväntas ha 3 av
-3 instresserade. Produkt B verkar alltså vara det bästa valet.
+3 instresserade. Produkt B verkar ha den högsta förväntade proportionen intresserade.
 
 ### 3)
 
@@ -147,6 +147,72 @@ pB * n
 \newpage
 
 ## Uppgift 3.3.1 *Multinomialmodell med Dirichlet-prior: Analys av opinionsundersökningar*
+
+``` {r}
+#Set-up and testing 
+library(gtools)
+set.seed(4711)
+
+test <- rdirichlet(n = 3, alpha= c(1, 1.2 , 0.2, 3, 2))
+test[,1]
+``` 
+
 ### 1)
+``` {r}
+#Ordningen är baserat på storleksordning i 2014 valet
+#S, M, SD, MP, C, V, L, KD, FI
+
+valet_2014 <- c(0.3101, 0.2333, 0.1286, 0.0689, 0.0611, 0.0572, 0.0542, 0.0457, 0.0312)
+sum(valet_2014)
+alpha_guesses <- c( 3.1, 2.3, 1.2, 0.68, 0.69, 0.57, 0.54, 0.46, 0.31)
+priori_result <- rdirichlet(n = 1000, alpha = alpha_guesses)
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="33%"}
+hist(  priori_result[,1], main = "S")
+abline(v = valet_2014[1])
+hist(  priori_result[,2], main = "M")
+abline(v = valet_2014[2])
+hist(  priori_result[,3], main = "SD")
+abline(v = valet_2014[3])
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="33%"}
+hist(  priori_result[,4], main = "MP")
+abline(v = valet_2014[4])
+hist(  priori_result[,5], main = "C")
+abline(v = valet_2014[5])
+hist(  priori_result[,6], main = "V")
+abline(v = valet_2014[6])
+```
+
+```{r, echo=FALSE, fig.show="hold", out.width="33%"}
+hist(  priori_result[,7], main = "L")
+abline(v = valet_2014[7])
+hist(  priori_result[,8], main = "KD")
+abline(v = valet_2014[8])
+hist(  priori_result[,9], main = "FI")
+abline(v = valet_2014[9])
+```
+
+\newpage
+
 ### 2)
+Vi använder 2020-maj från Sifo
+
+```{r}
+#S, M, SD, MP, C, V, L, KD, FI
+
+maj_2020 <- c(0.317, 0.186, 0.189, 0.039, 0.072, 0.09, 0.034, 0.061, 0)
+round_maj_2020 <- round(maj_2020 * 200)
+
+round_maj_2020
+sum(round_maj_2020)
+```
+Pågrund av att det finns fler partier med så få röster
+så de inte blir medtagna, därav blir det inte precis 200....
+
 ### 3)
+```{r}
+
+```
