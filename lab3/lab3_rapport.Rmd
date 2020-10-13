@@ -1,7 +1,7 @@
 ---
 title: "Lab 3"
 author: "Regina Hansson (regha434) och Victor Lells (vicle728)"
-date: '2020-10-09'
+date: '2020-10-13'
 output: pdf_document
 toc: true
 toc_depth: 2
@@ -149,19 +149,15 @@ pB * n
 ## Uppgift 3.3.1 *Multinomialmodell med Dirichlet-prior: Analys av opinionsundersökningar*
 
 ``` {r}
-#Set-up and testing 
 library(gtools)
 set.seed(4711)
-
-test <- rdirichlet(n = 3, alpha= c(1, 1.2 , 0.2, 3, 2))
-test[,1]
 ``` 
 
 ### 1)
 ``` {r}
-#Ordningen är baserat på storleksordning i 2014 valet
-#S, M, SD, MP, C, V, L, KD, FI
+# Ordningen är baserad på resultatet i valet 2014
 
+# 	 	 		   S       M      SD       MP      C      V       L       KD      FI
 valet_2014 <- c(0.3101, 0.2333, 0.1286, 0.0689, 0.0611, 0.0572, 0.0542, 0.0457, 0.0312)
 sum(valet_2014)
 alpha_guesses <- c( 3.1, 2.3, 1.2, 0.68, 0.69, 0.57, 0.54, 0.46, 0.31)
@@ -201,25 +197,24 @@ abline(v = valet_2014[9])
 Vi använder 2020-maj från Sifo
 
 ```{r}
-#S, M, SD, MP, C, V, L, KD, FI
-
+# 				S      M     SD      MP     C     V      L     KD   FI
 maj_2020 <- c(0.317, 0.186, 0.189, 0.039, 0.072, 0.09, 0.034, 0.061, 0)
 round_maj_2020 <- round(maj_2020 * 200)
 
 round_maj_2020
 sum(round_maj_2020)
 ```
-Pågrund av att det finns fler partier med så få röster
-så de inte blir medtagna, därav blir det inte precis 200....
+På grund av att det finns flera partier med så få röster
+så de inte blir medtagna blir det inte precis 200....
 
 ### 3)
 ```{r}
-alpha_posterior <- maj_2020+alpha_guesses
+alpha_posterior <- alpha_guesses + maj_2020
+
 uppgiftA  <- 0 
 uppgiftB  <- 0
 uppgiftC  <- 0
 uppgiftD  <- 0
-
 S_results <- c()
 
 n <- 10000
@@ -227,72 +222,70 @@ n <- 10000
 for (i in 1:n) {
     temp <- rdirichlet(n=1, alpha = alpha_posterior)
        
-    #Normalisering av partier under fyra % spärren
+    # Borttagning av partier under 4%-spärren 
     for (i in 1:length(temp)){
-        if(temp[1,i] < 0.04){
-            temp[1,i] = 0
+        if(temp[i] < 0.04){
+            temp[i] = 0
         }
     }
+	# Normalisering
     total <- sum(temp)
     for (i in 1:length(temp)){
-        temp[1,i] = temp[1,i] / total
+        temp[i] = temp[i] / total
     }
     
-    S <- temp[1,1]
-    M <- temp[1,2]
-    SD <- temp[1,3]
-    MP <- temp[1,4]
-    C <- temp[1,5]
-    V <- temp[1,6]
-    L <- temp[1,7]
-    KD <- temp[1,8]
-    FI <- temp[1,9]
+    S  <- temp[1]
+    M  <- temp[2]
+    SD <- temp[3]
+    MP <- temp[4]
+    C  <- temp[5]
+    V  <- temp[6]
+    L  <- temp[7]
+    KD <- temp[8]
+    FI <- temp[9]
+    rödgröna <- S + V + MP
+    alliansen <- M + C + L + KD
+	
+# LÖSNINGAR
+
+# a)
+    if (rödgröna > alliansen) { uppgiftA <- uppgiftA + 1 }
     
-    #Uppgift A
-    rg <- S + V + MP
-    al <- M + C + L + KD
-    if (rg > al){
-        uppgiftA <- uppgiftA + 1
-    }
-    
-    #UppgiftB
-    if (SD > M){
-        uppgiftB <- uppgiftB + 1
-    }
+# b) 
+    if (SD > M) { uppgiftB <- uppgiftB + 1 }
 
-    if (KD < 0.04){
-        uppgiftC <- uppgiftC +1
-    }
+# c)
+    if (KD < 0.04) { uppgiftC <- uppgiftC + 1 }
 
-    if (MP < 0.04){
-        uppgiftD <- uppgiftD +1
-    }
+# d)
+    if (MP < 0.04) { uppgiftD <- uppgiftD + 1 }
 
+# e) 
     S_results <- c(S_results, S)
 }
 
-#Sannolikheten att de rödgröna är större än alliansen. 
-uppgiftA/n
+svarA <- uppgiftA / n
+svarB <- uppgiftB / n
+svarC <- uppgiftC / n
+svarD <- uppgiftD / n
 
-#Sannolikheten att SD är större än M
-uppgiftB/n
-
-#Sannolikheten att KD är under 4% spärren
-uppgiftC/n
-
-#Sannolikheten att MP åker ut ur riksdagen
-uppgiftD/n
-
-#Uppgift E
-mean    <- mean(S_results) 
+# e) ... fortsättning 
+mean <- mean(S_results) 
 sigma <- sd(S_results)
-n     <- length(S_results)
+n <- length(S_results)
+interval_size <- 0.95
+alpha <- 1 - 0.95
 
-error <- qnorm(0.975)*sigma/sqrt(n)
-lower <- mean-error
-upper <- mean+error  
-
-#Sannolikhetsintrevallet för Socialdemokraterna med 95% signifikans
-lower
-upper
+error <- qnorm(1 - alpha/2) * sigma/sqrt(n)
+lower <- mean - error
+upper <- mean + error  
+ 
+# SVAR:
 ```
+
+a) `r svarA`
+b) `r svarB`
+c) `r svarC`
+d) `r svarD`
+e) [`r lower`, `r upper`]
+
