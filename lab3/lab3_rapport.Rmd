@@ -117,11 +117,15 @@ Produkt A förväntas ha 7 intresserade av 13, medan produkt B förväntas ha 3 
 
 ``` {r, fig.show="hold", out.width="50%"}
 n <- 87
-pA <- mean(rbeta(1000, alpha_xA, beta_xA))
-pB <- mean(rbeta(1000, alpha_xB, beta_xB))
+XA <- c()
+XB <- c()
+for (i in 1:1000) { 
+	pA <- mean(rbeta(1, alpha_xA, beta_xA))
+	pB <- mean(rbeta(1, alpha_xB, beta_xB))
 
-XA <- rbinom(1000, n, pA)
-XB <- rbinom(1000, n, pB)
+	XA <- c(XA, rbinom(1, n, pA))
+	XB <- c(XB, rbinom(1, n, pB))
+}
 
 hist(XA)
 hist(XB)
