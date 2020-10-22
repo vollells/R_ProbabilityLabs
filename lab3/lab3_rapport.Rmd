@@ -60,7 +60,7 @@ plot(interval, lliks, type="l")
 
 ### 4)
 
-![Vår härledning av posterior](härledning.jpg)
+![Vår härledning av posterior](härledning_correct.jpg)
 
 ### 5)
 
