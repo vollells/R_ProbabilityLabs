@@ -103,8 +103,8 @@ beta_xA <- beta + length(xA)*k - sum(xA)
 alpha_xB <- alpha + sum(xB)
 beta_xB <- beta + length(xB)*k - sum(xB)
 
-expected_A <- alpha_xA/ (alpha_xA / beta_xA)
-expected_B <- alpha_xB/ (alpha_xB / beta_xB)
+expected_A <- alpha_xA/ (alpha_xA + beta_xA)
+expected_B <- alpha_xB/ (alpha_xB + beta_xB)
 
 expected_A
 expected_B
@@ -234,6 +234,7 @@ for (i in 1:n) {
         temp[i] = temp[i] / total
     }
     
+	# För tydlighetens skull
     S  <- temp[1]
     M  <- temp[2]
     SD <- temp[3]
@@ -270,15 +271,15 @@ svarC <- uppgiftC / n
 svarD <- uppgiftD / n
 
 # e) ... fortsättning 
-mean <- mean(S_results) 
-sigma <- sd(S_results)
-n <- length(S_results)
-interval_size <- 0.95
-alpha <- 1 - 0.95
+	mean <- mean(S_results) 
+	sigma <- sd(S_results)
+	n <- length(S_results)
+	interval_size <- 0.95
+	alpha <- 1 - 0.95
 
-error <- qnorm(1 - alpha/2) * sigma/sqrt(n)
-lower <- mean - error
-upper <- mean + error  
+	error <- qnorm(1 - alpha/2) * sigma/sqrt(n)
+	lower <- mean - error
+	upper <- mean + error  
  
 # SVAR:
 ```
